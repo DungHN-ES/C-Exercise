@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <math.h>
 
 #define _BUFF_SIZE 100
 #define _MAX_VAL 100
@@ -17,6 +18,7 @@ void ungetch(int c);
 int getop(char []);
 void push(double);
 double pop(void);
+void printStack(void);
 
 int main()
 {
@@ -50,15 +52,44 @@ int main()
                 push(pop() / op2);
             }
             break;
-        /*
-        Add the modulus (%) operator 
-        */
+        /* Add the modulus (%) operator */
         case '%':   
             op2 = pop();
             if (!op2)
                 printf("Error: Divisor by 0\n");
             else
                 push((int)pop() % (int)op2);
+            break;
+        /* Print the top element without poping */
+        case 'p':
+            printf("%f\n", cal[stack_pos-1]);
+            break;
+        /* Duplicate the top element */
+        case 'd':
+            op2 = pop();
+            push(op2);
+            push(op2);
+            break;
+        /* Swap the position of top two elements */
+            double op1 = pop();
+            op2 = pop();
+            push(op1);
+            push(op2);
+            break;
+        /* Clear the stack */
+        case 'c':
+            stack_pos = 0;
+            break;
+        /* Using function in math.h library */
+        case 's':
+            push(sin(pop()));
+            break;
+        case 'o':
+            op2 = pop();
+            push(pow(op2, pop()));
+            break;
+        case 'e':
+            push(exp(pop()));
             break;
         case '\n':
             printf("%f\n", pop());
@@ -69,6 +100,8 @@ int main()
     }
     return 0;
 }
+
+
 /* push a float into stack */
 void push(double value)
 {

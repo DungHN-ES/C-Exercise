@@ -1,29 +1,31 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-int strend(char *s, char* t);
-int isEqual(char *, char *);
+char *strCat(char *s, char *t);
 
 int main()
-{   
-    char *s = "Nghia Dung";
-    char *pattern = "ung";
-    printf("%d\n", strend(s, pattern));
+{
+    char *s = "Hoang ";
+    char *t = "Dung";
+    char *new = NULL;
+    new = strCat(s, t);
+    printf("%s\n", new);
     return 0;
 }
 
-int strend(char *s, char *t)
+char *strCat(char *s, char *t)
 {
-    int result = -1;
-    while (*s != '\0') {
-        if (isEqual(s,t))
-            return 1;
-        s++;
+    char *tmp = (char*)malloc((strlen(s) + strlen(t) + 1) * sizeof(char));
+    int i, j;
+    for (i = 0; i < strlen(s); ++i)
+    {
+        *(tmp+i) = *(s+i);
     }
-    return -1;
-}
-
-int isEqual(char *s1, char *s2)
-{
-    return (strcmp(s1, s2)) ? 0 : 1;
+    for (j = 0; j < strlen(t); j++, i++)
+    {
+        *(tmp+i) = *(t+j);
+    }
+    *(tmp+i) = '\0';
+    return tmp;
 }
